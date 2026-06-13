@@ -1,0 +1,10 @@
+Obiettivo: simulare fotoni a 662 KeV su un detector a tronco di piramide base rettangolare di dimensioni 
+	   h = 26.9 cm - 2.5 cm 
+	   B = 11.7 cm x 8.3 cm
+	   b =  1.8 cm x 1.2 cm
+Fasi progetto: - I   FASE: modificare AnaEx01 cambiando nel DetectorConstruction forma e materiale del detector
+	       - II  FASE: modificare le PhysicsList simulando l'interazione con diverse interazioni
+	       - III FASE: confronto e validazione dei risultati attraverso il confronto con lo spettro ricavato in 			   lab
+Svolgimento fasi: - I e II FASE: modificare AnaEx01
+		  - III FASE: Confrontare lo spettro ottenuto dalla simulazione con quello ottenuto 			                      sperimentalmente fittando sulla distribuzione teorica una convoluzione di gaussiane			      con media pari all'energia corrispondente al bin della simulazione e sigma pari alla 			      sigma ricavata da S/E = sqrt(a^2/E + b^2 + c^2/E^2) dove E è in KeV, b e c sono 				      paramentri caratteristici del PMT che dunque consideriamo come costanti (valori 				      sperimentali) in quanto abbiamo solo contributo poissoniano dato dal fotoelettrone (b 			      = 0.013 +- 0.004, c = 0.001 +- 3085, a = 0.965 +- 0.043). 
+Dubbi e perplessità: - III FASE: - Come collego l'informazione su a con l'efficienza del detector?
