@@ -1,0 +1,34 @@
+Obiettivo: simulare fotoni a 662 KeV su un detector a tronco di piramide base rettangolare di dimensioni 
+	   h = 26.9 cm - 2.5 cm 
+	   B = 11.7 cm x 8.3 cm
+	   b =  1.8 cm x 1.2 cm
+Fasi progetto: - I   FASE: modificare AnaEx01 cambiando nel DetectorConstruction forma e materiale del detector
+	       - II  FASE: modificare le PhysicsList simulando l'interazione con diverse interazioni
+	       - III FASE: confronto e validazione dei risultati attraverso il confronto con lo spettro ricavato in 			   lab
+Svolgimento fasi: - I e II FASE: modificare AnaEx01
+		  - III FASE: Confrontare lo spettro ottenuto dalla simulazione con quello ottenuto 			                      sperimentalmente fittando sulla distribuzione teorica una convoluzione di gaussiane			      con media pari all'energia corrispondente al bin della simulazione e sigma pari alla 			      sigma ricavata da S/E = sqrt(a^2/E + b^2 + c^2/E^2) dove E è in KeV, b e c sono 				      paramentri caratteristici del PMT che dunque consideriamo come costanti (valori 				      sperimentali) in quanto abbiamo solo contributo poissoniano dato dal fotoelettrone (b 			      = 0.013 +- 0.004, c = 0.001 +- 3085, a = 0.965 +- 0.043). 
+Dubbi e perplessità: - III FASE: - Come collego l'informazione su a con l'efficienza del detector?
+
+Fasi COMPLETATE: - I FASE
+
+IDEE PER COMPLETARE LA FASE II
+
+LE PHYSICSLIST DISPONIBILI
+
+Le PhysicsList che possiamo usare: -G4EmStandardPhysics: è la libreria EM standar di Geant, funziona bene a 662 							 keV ma trascura alcuni dettagli atomici quindi è veloce 							 ma poco precisa;
+				-G4EmStandardPhysics_option4: La migliore per la fisica a bassa energia produce la 							      descrizione più accurata possibile del Compton 								      Scattering
+				-G4EmLivermorePhysics: basata sui database LLNL descrive molto bene l'effetto 							       fotoelettrico ed è pensata per la fisica a bassissime 							       energie 
+				-G4EmPenelopePhysics: molto buona per il trasporto degli elettroni e l'analisi del 						      backscattering  
+
+Per modificare le physicslist dobbiamo aggiornare il codice AnaEx01.cc richiedendo alla physicslist factory la physicslist specifica. Quindi nella riga:  physListName = "QGSP_BIC_EMZ" dobbiamo aggiornare la stringa tra "". 
+G4EmStandardPhysics = "QGSP_BIC"
+G4EmStandardPhysics_option4 = "QGSP_BIC_EMZ"
+G4EmLivermorePhysics = "QGSP_BIC_LIV"
+G4EmPenelopePhysics = "QGSP_BIC_PEN"
+
+CONFRONTO CON DIVERSI MODELLI ADRONICI DI BASE 
+
+Siccome la stringa "QGSP_BIC_..." significa concettualmente: usa il modello Quark-Gluon String e BInary Cascade per le interazioni adroniche e … per quelle elettromagnetiche la parte adronica nel nostro caso rimane dormiente in quanto i fotoni non hanno l'energia minima per attivare le interazioni nucleari. Possiamo confrontare uno dei modelli elettromagnetici (come EMZ che è il più preciso) con diversi modelli adronici e mostrare che la parte adronica è in questo caso ininfluente poiché è sempre inutilizzata. Il confronto potrebbe avvenire tra i modelli:
+- QGSP_BIC: Quark-Gluon String + BInary Cascade
+- FTFP_BERT : Fritiof + interazione intra-nucleare di Bertini
+- QGSP_BERT: Quark-Gluon String + interazione intra-nucleare di Bertini 
